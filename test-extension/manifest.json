@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "Test extension",
+    "version": "1.0",
+
+    "permissions": ["activeTab", "storage"],
+
+    "browser_action": {
+        "default_title": "Test extension",
+        "default_popup": "popup/show_url.html"
+    }
+}
