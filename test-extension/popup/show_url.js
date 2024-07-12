@@ -3,20 +3,37 @@ document.addEventListener("DOMContentLoaded", main);
 
 
 async function main() {
-    const test = new StorageVariable("storage-test");
-    if (await test.is_empty()) await test.set("Wargh");
+    // const test = new StorageVariable("storage-test");
+    // if (await test.is_empty()) await test.set("Wargh");
 
-    const storage_container = document.getElementById("storage");
-    storage_container.innerText = await test.get();
+    // const storage_container = document.getElementById("storage");
+    // storage_container.innerText = await test.get();
+
+    const address_registry = new StorageVariable("address-registry")
+    let address_registry_local = await address_registry.get()
+    if (address_registry_local == null) address_registry_local = {}
 
 
     const loc_container = document.getElementById("url");
-    getActiveTabHostname().then(hostname => {
-        loc_container.innerText = hostname;
-    }).catch(err => {
-        console.err(err);
-        loc_container.innerText = "Wargh";
-    });
+    const hostname = await getActiveTabHostname().catch(_err => "Wargh")
+    loc_container.innerText = hostname
+
+    const storage_container = document.getElementById("storage");
+    let current_address = address_registry_local[hostname]
+    if (!current_address) current_address = "None"
+
+    storage_container.innerText = current_address
+
+    document.getElementById("submit-button").addEventListener("click", async e => {
+        const address_box = document.getElementById("address-box")
+        const address = address_box.value
+        // alert("user submitted: " + address)
+
+        // if (!(hostname in address_registry_local)) address_registry_local[hostname] = []
+        address_registry_local[hostname] = address
+
+        await address_registry.set(address_registry_local)
+    })
 }
 
 
