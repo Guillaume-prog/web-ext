@@ -13,7 +13,15 @@
     {
       devShells = forEachSupportedSystem ({ pkgs }: with pkgs; {
         default = mkShell {
-          packages = [ web-ext ];
+          packages = [ 
+            web-ext
+            nodejs_22
+          ];
+
+          shellHook = ''
+            clear
+            export PS1="\n\[\033[1;32m\][web-ext]\[\033[0m\]$ "
+          '';
         };
       });
     };
